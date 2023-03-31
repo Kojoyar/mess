@@ -2,7 +2,7 @@ import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 
 import OtpInput from "otp-input-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
@@ -80,12 +80,16 @@ const RegisterPage = () : JSX.Element => {
       });
   }
 
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   return (
     <section className="bg-emerald-500 flex items-center justify-center h-screen">
       <div>
         <Toaster toastOptions={{ duration: 4000 }} />
         <div id="recaptcha-container"></div>
-        {user ? (
+        {user.phoneNumber ? (
           <h2 className="text-center text-white font-medium text-2xl">
             👍Login Success
           </h2>
