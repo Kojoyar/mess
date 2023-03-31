@@ -7,7 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { EmailAuthProvider, linkWithCredential } from "firebase/auth";
+import { EmailAuthProvider, linkWithCredential, updateProfile } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 
 declare global {
@@ -30,6 +30,8 @@ const RegisterPage = () : JSX.Element => {
   } as IUser);
   const [email, setEmail] : any = useState("")
   const [password, setPassword] : any = useState("");
+  const [username, setUsername] : any = useState("");
+  const [agree, setAgree] : any = useState(false);
 
   const credential = EmailAuthProvider.credential(email, password);
 
@@ -51,6 +53,12 @@ const RegisterPage = () : JSX.Element => {
 
   const onSignup = () => {
     setLoading(true);
+    
+    if(!agree) {
+      alert('You need to agree to our Policy')
+      return
+    }
+
     onCaptchVerify();
 
     const appVerifier = window.recaptchaVerifier;
@@ -85,6 +93,14 @@ const RegisterPage = () : JSX.Element => {
           console.log("Account linking success", user);
         }).catch((error) => {
           console.log("Account linking error", error);
+        });
+        //или 
+        updateProfile(res.user, {
+          displayName: username, photoURL: "https://example.com/jane-q-user/profile.jpg"
+        }).then(() => {
+          console.log('Profile updated!')
+        }).catch((err) => {
+         console.log(err);
         });
         setLoading(false);
 
@@ -158,6 +174,8 @@ const RegisterPage = () : JSX.Element => {
                 <PhoneInput country={"in"} value={ph} onChange={setPh} />
                 <input type="text" placeholder="email"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}/>
                 <input type="text" placeholder="password"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}/>
+                <input type="text" placeholder="username"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.currentTarget.value)}/>
+                <input type="checkbox"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAgree(e.currentTarget.checked)}/>
                 <button
                   onClick={onSignup}
                   className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
