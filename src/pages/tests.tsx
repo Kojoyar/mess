@@ -85,3 +85,12 @@
 
 // import OtpInputType  from "otp-input-react";
 // const myOtpType: OtpInputType = "number";
+import React from 'react'
+
+const tests = () => {
+  return (
+    <div>tests</div>
+  )
+}
+
+export default tests
