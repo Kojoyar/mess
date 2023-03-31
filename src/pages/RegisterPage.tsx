@@ -7,6 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { EmailAuthProvider, linkWithCredential } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 
 declare global {
@@ -16,7 +17,7 @@ declare global {
 }
 
 interface IUser {
-  phoneNumber: string
+  phoneNumber: string,
 }
 
 const RegisterPage = () : JSX.Element => {
@@ -25,8 +26,12 @@ const RegisterPage = () : JSX.Element => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showOTP, setShowOTP] = useState<boolean>(false);
   const [user, setUser] = useState<IUser>({
-    phoneNumber:''
+    phoneNumber:'',
   } as IUser);
+  const [email, setEmail] : any = useState("")
+  const [password, setPassword] : any = useState("");
+
+  const credential = EmailAuthProvider.credential(email, password);
 
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
@@ -66,18 +71,29 @@ const RegisterPage = () : JSX.Element => {
   }
 
   const onOTPVerify = (): void => {
+    console.log(email, password);
+    
     setLoading(true);
     window.confirmationResult
       .confirm(otp)
       .then(async (res:any) => {
         console.log(res);
         setUser(res.user);
+        linkWithCredential(res.user, credential)
+        .then((usercred) => {
+          const user = usercred.user;
+          console.log("Account linking success", user);
+        }).catch((error) => {
+          console.log("Account linking error", error);
+        });
         setLoading(false);
+
       })
       .catch((err:any) => {
         console.log(err);
         setLoading(false);
       });
+
   }
 
   useEffect(() => {
@@ -140,6 +156,8 @@ const RegisterPage = () : JSX.Element => {
                   Verify your phone number
                 </label>
                 <PhoneInput country={"in"} value={ph} onChange={setPh} />
+                <input type="text" placeholder="email"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}/>
+                <input type="text" placeholder="password"  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}/>
                 <button
                   onClick={onSignup}
                   className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
