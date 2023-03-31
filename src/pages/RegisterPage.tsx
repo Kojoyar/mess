@@ -155,3 +155,4 @@ const RegisterPage = () : JSX.Element => {
 };
 
 export default RegisterPage;
+
