@@ -20,23 +20,19 @@ import { useNavigate } from 'react-router-dom';
 
 const pages = [
   {
-    type: 'Chat Rooms',
+    type: 'Chat',
     path: '/chat'
   },
-  {
-    type: 'Add Chat',
-    path: '/add'
-  }
 ];
 
 const settings = [
   {
-    type: 'Account',
-    path: '/register'
+    type: 'Profile',
+    path: '/profile'
   },
   {
-    type: 'Settings',
-    path: '/settings'
+    type: 'Register',
+    path: '/register'
   },
   {
     type: 'Logout',
@@ -78,7 +74,6 @@ function Navbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -94,7 +89,7 @@ function Navbar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Messege
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -153,7 +148,6 @@ function Navbar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -196,7 +190,7 @@ function Navbar() {
               ))}
             </Menu>
           </Box>
-          <Button onClick={() => logout()} style={{color: 'black'}}>Logout test</Button>
+          {/* <Button onClick={() => logout()} style={{color: 'black'}}>Logout test</Button> */}
         </Toolbar>
       </Container>
     </AppBar>

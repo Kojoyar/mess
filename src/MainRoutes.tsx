@@ -1,21 +1,20 @@
 import * as React from 'react';
 import RegisterPage from './pages/RegisterPage'
-import LoginPage from './pages/LoginPage'
-import ChatPage from './pages/ChatPage'
 import {Routes, Route} from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import SettingsProfile from './pages/SettingsProfile';
+import Profile from './components/Profile/Profile';
+import Chat from './components/Chat/Chat';
 
 
 const MainRoutes : React.FC = () : any => {
+
   return (
-    <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/register' element={<RegisterPage />} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/settings' element={<SettingsProfile />} />
-      <Route path='/chat' element={<ChatPage />} />
-    </Routes>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/profile' element={<Profile/>} />
+        <Route path='/chat' element={<Chat/>} />
+      </Routes>
   )
 }
 
